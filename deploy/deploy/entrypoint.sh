@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sdb connect %TV_IP%
+sdb connect $TV_IP
 
 cat <<EOF >/home/tizen/tizen-studio-data/profile/profiles.xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -16,4 +16,5 @@ EOF
 
 tizen package --type wgt --sign ea_cert -- /home/tizen/projects/testProject
 
-tizen install --name /home/tizen/projects/testProject/testProject.wgt -s %TV_IP%:26101
+tizen install --name /home/tizen/projects/testProject/testProject.wgt -s $TV_IP:26101
+
