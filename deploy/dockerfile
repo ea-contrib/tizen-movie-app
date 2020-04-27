@@ -1,0 +1,87 @@
+FROM ubuntu:18.04
+
+
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update && \
+    apt-get full-upgrade -y && \
+    apt-get install default-jdk -y && \
+    apt-get install pciutils -y && \
+    apt-get install zip -y
+
+
+
+RUN mkdir /home/tizen
+RUN mkdir /home/tizen/bin
+COPY ./tizen_studio_3.7.bin /home/tizen
+RUN chmod +x /home/tizen/tizen_studio_3.7.bin
+
+RUN adduser --no-create-home --disabled-password --gecos ''  tizen && \
+    chown -R tizen: /home/tizen && \
+    chmod -R 777 /home/tizen && \
+    usermod --home /home/tizen tizen && \
+    touch /home/tizen/.bashrc && \
+    echo "PATH=$PATH:/home/tizen/bin" >> /home/tizen/.bashrc
+
+RUN apt-get install libcurl3-gnutls -y  && \
+    apt-get install expect  -y && \
+    apt-get install gettext  -y && \
+    apt-get install python2.7 -y  && \
+    apt-get install libwebkitgtk-1.0-0 -y  && \
+    apt-get install rpm2cpio  -y && \
+    apt-get install make  -y && \
+    apt-get install cpio  -y && \
+    apt-get install ruby -y && \
+	apt-get install libxcb-icccm4  -y && \
+	apt-get install libxcb-render-util0  -y && \
+	apt-get install libxcb-image0  -y && \
+	apt-get install acl  -y && \
+	apt-get install libsdl1.2debian  -y && \
+	apt-get install libxcb-randr0  -y && \
+	apt-get install bridge-utils  -y && \
+	apt-get install openvpn -y 
+
+RUN  apt-get install libcanberra-gtk-module  -y && \
+     apt-get install libv4l-0 -y && \
+     apt-get install libvirt-bin -y && \
+     apt-get install libxcb-shape0 -y && \
+     apt-get install libxtst6  -y && \
+     apt-get install qemu-kvm -y && \
+     apt-get install sudo  -y && \
+     apt-get install zenity  -y && \
+     apt-get install wget -y && \
+     apt-get install tree -y && \
+     apt-get clean && \
+     rm -rf /var/lib/apt/lists/*
+
+RUN wget http://se.archive.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
+		dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb
+
+
+USER tizen
+WORKDIR /home/tizen
+RUN ls -la . 
+RUN yes | ./tizen_studio_3.7.bin
+
+RUN tree /home/tizen
+
+
+WORKDIR /home/tizen/tizen-studio/package-manager
+RUN ./package-manager-cli.bin install --accept-license Baseline-SDK 
+RUN ./package-manager-cli.bin install --accept-license TOOLS 
+
+RUN ./package-manager-cli.bin install --accept-license NativeToolchain
+RUN	./package-manager-cli.bin install --accept-license EXTRAS
+RUN	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Public
+RUN	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Public-Emulator
+RUN	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Public-WebAppDevelopment
+RUN	./package-manager-cli.bin install --accept-license cert-add-on 
+RUN	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Extension-Tools
+RUN	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Extension-Resources
+
+
+ENV PATH="/home/tizen/tizen-studio/tools/ide/bin/:${PATH}"
+
+
