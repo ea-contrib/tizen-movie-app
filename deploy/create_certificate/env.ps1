@@ -1,0 +1,1 @@
+Set-Item -Path env:host_ip -Value 192.168.88.252

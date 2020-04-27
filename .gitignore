@@ -113,3 +113,13 @@ dist
 .yarn/unplugged
 .yarn/build-state.yml
 .pnp.*
+/deploy/certificates/author.crt
+/deploy/certificates/author.csr
+/deploy/certificates/author.p12
+/deploy/certificates/author.pri
+/deploy/certificates/author.pub
+/deploy/certificates/device-profile.xml
+/deploy/certificates/distributor.crt
+/deploy/certificates/distributor.csr
+/deploy/certificates/distributor.p12
+/deploy/certificates/distributor.pri
