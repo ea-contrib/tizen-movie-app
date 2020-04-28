@@ -4,7 +4,7 @@ windows
 3) Then run Xlaunch from the start menu and follow the initial configuration steps (tick disable acess control checkbox and save config %userprofile%\Desktop)
 
 linux
-coming soon
+everything is alreasy ok :)
 
 
 common (after startup)

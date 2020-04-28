@@ -8,4 +8,4 @@ RUN chown tizen /home/tizen/entrypoint.sh && \
 
 USER tizen 
 
-ENTRYPOINT ["/bin/sh"]
+ENTRYPOINT /home/tizen/entrypoint.sh && /bin/sh
