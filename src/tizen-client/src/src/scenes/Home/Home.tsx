@@ -1,6 +1,13 @@
 import * as React from "react";
 
-class Home extends React.Component {
+type Props = {
+
+};
+type State = {
+
+};
+
+class Home extends React.Component<Props, State> {
 
 	render() {
 		return <div>Home</div>;
