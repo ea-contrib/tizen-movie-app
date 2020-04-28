@@ -8,4 +8,6 @@ RUN chown tizen /home/tizen/entrypoint.sh && \
 
 USER tizen 
 
+COPY --chown=tizen ./dist/*.* /home/tizen/projects/testProject/
+
 ENTRYPOINT /home/tizen/entrypoint.sh && /bin/sh

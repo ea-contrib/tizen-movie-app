@@ -2,6 +2,11 @@
 
 docker build -f deploy.dockerfile -t tizen-deploy .
 
+Get-ChildItem -Path C:\Temp -Include *.* -exclude .gitkeep -File -Recurse | foreach { $_.Delete()}
+
+$distDirectory = "$PSScriptRoot\..\..\src\tizen-client\dist\*.*"
+Copy-item -Force -Recurse -Verbose $distDirectory -Destination ".\dist"
+
 $baseDir = $PSScriptRoot -replace '[\\]', '/'
 $baseDir = Split-Path $baseDir
 
