@@ -1,2 +1,2 @@
-export { NavigationBar } from './NavigationBar';
-export { GuestRoute, SecuredRoute } from './Route'
+export { NavigationBar } from "./NavigationBar";
+export { GuestRoute, SecuredRoute } from "./Route";

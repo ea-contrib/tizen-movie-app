@@ -1,33 +1,27 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { login } from '../../services/auth'
+import { login } from "../../services/auth";
 
 type Props = {
-	performLogin: () => void
+  performLogin: () => void;
 };
 
-type State = {
-
-};
+type State = {};
 
 class Authorization extends React.Component<Props, State> {
-
-	render() {
-		return (
-			<>
-			<div>Authorization</div>
-			<button onClick={this.props.performLogin}>Login</button>
-			</>
-		);
-	}
+  render() {
+    return (
+      <>
+        <div>Authorization</div>
+        <button onClick={this.props.performLogin}>Login</button>
+      </>
+    );
+  }
 }
 
 const mapDispatchToProps = {
-	performLogin: login
+  performLogin: login,
 };
 
-export default connect(
-	null,
-	mapDispatchToProps,
-)(Authorization);
+export default connect(null, mapDispatchToProps)(Authorization);
