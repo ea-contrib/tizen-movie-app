@@ -1,3 +1,2 @@
-import NavigationBar from './NavigationBar';
-
-export { NavigationBar }
+export { NavigationBar } from './NavigationBar';
+export { GuestRoute, SecuredRoute } from './Route'
