@@ -1,17 +1,12 @@
 import * as React from "react";
 
-type Props = {
-
-};
-type State = {
-
-};
+type Props = {};
+type State = {};
 
 class NotFound extends React.Component<Props, State> {
-
-	render() {
-		return <div>NotFound</div>;
-	}
+  render() {
+    return <div>NotFound</div>;
+  }
 }
 
 export default NotFound;

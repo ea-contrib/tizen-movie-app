@@ -2,34 +2,31 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 
 type Props = {
-	className: string
+  className: string;
 };
-type State = {
-
-};
+type State = {};
 
 class NavigationBar extends React.Component<Props, State> {
-
-	render() {
-		return (
-		<nav className={this.props.className + ' container'}>
-			<ul>
-				<li>
-					<Link to="/">Home</Link>
-				</li>
-				<li>
-					<Link to="/about">About</Link>
-				</li>
-				<li>
-					<Link to="/authorization">Authorization</Link>
-				</li>
-				<li>
-					<Link to="/profile">Profile</Link>
-				</li>
-			</ul>
-		</nav>
-		);
-	}
+  render() {
+    return (
+      <nav className={this.props.className + " container"}>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/authorization">Authorization</Link>
+          </li>
+          <li>
+            <Link to="/profile">Profile</Link>
+          </li>
+        </ul>
+      </nav>
+    );
+  }
 }
 
 export default NavigationBar;
