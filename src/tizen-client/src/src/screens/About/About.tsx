@@ -1,7 +1,12 @@
 import * as React from "react";
+import { connect } from "react-redux";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
-type Props = {};
-type State = {};
+import { ReduxState } from "../../Store";
+
+interface PathParams {}
+interface Props extends RouteComponentProps<PathParams> {}
+interface State {}
 
 class About extends React.Component<Props, State> {
   render() {
@@ -9,4 +14,8 @@ class About extends React.Component<Props, State> {
   }
 }
 
-export default About;
+const mapStateToProps = (state: ReduxState) => ({});
+
+const mapDispatchToProps = {};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(About));

@@ -1,10 +1,11 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-type Props = {
+interface Props {
+  authenticated: boolean;
   className: string;
-};
-type State = {};
+}
+interface State {}
 
 class NavigationBar extends React.Component<Props, State> {
   render() {
@@ -17,12 +18,16 @@ class NavigationBar extends React.Component<Props, State> {
           <li>
             <Link to="/about">About</Link>
           </li>
-          <li>
-            <Link to="/authorization">Authorization</Link>
-          </li>
-          <li>
-            <Link to="/profile">Profile</Link>
-          </li>
+          {!this.props.authenticated && (
+            <li>
+              <Link to="/authorization">Authorization</Link>
+            </li>
+          )}
+          {this.props.authenticated && (
+            <li>
+              <Link to="/profile">Profile</Link>
+            </li>
+          )}
         </ul>
       </nav>
     );
