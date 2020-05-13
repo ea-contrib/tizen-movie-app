@@ -1,6 +1,6 @@
 #!/bin/sh
 
-./env.sh
+TV_IP='192.168.88.248'
 
 docker build -f deploy.dockerfile -t tizen-deploy .
 
@@ -9,4 +9,7 @@ baseDir = "$(dirname $baseDir)"
 
 yes | cp "$pwd/../../src/tizen-client/dist/*.*" ./dist
 
-docker run --network=host  -v $baseDir/certificates:/home/tizen/SamsungCertificate/ea_cert:ro -it -e TV_IP=$TV_IP tizen-deploy
+docker run -it --network=host \
+	-v $baseDir/certificates:/home/tizen/SamsungCertificate/ea_cert:ro \
+	-e TV_IP=$TV_IP \
+	tizen-deploy
