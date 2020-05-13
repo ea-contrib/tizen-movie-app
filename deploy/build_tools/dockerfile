@@ -1,19 +1,56 @@
 FROM ubuntu:18.04
 
+# https://developer.tizen.org/development/tizen-studio/download
+ARG TIZEN_SDK_VER="3.7"
+ARG TIZEN_SDK_URL="http://download.tizen.org/sdk/Installer/tizen-studio_${TIZEN_SDK_VER}/web-cli_Tizen_Studio_${TIZEN_SDK_VER}_ubuntu-64.bin"
+ARG TIZEN_HOME="/home/tizen"
+
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update && \
-    apt-get full-upgrade -y && \
-    apt-get install default-jdk -y && \
-    apt-get install pciutils -y && \
-    apt-get install zip -y
+RUN apt update -y && \
+    apt install --no-install-recommends -y  \
+    default-jdk \
+    pciutils \
+    zip \ 
+    libcurl3-gnutls \
+    expect \
+    gettext  \
+    python2.7 \
+    libwebkitgtk-1.0-0 \
+    rpm2cpio \
+    make \
+    cpio \
+    ruby \
+    libxcb-icccm4 \
+    libxcb-render-util0 \
+    libxcb-image0 \
+    acl \
+    libsdl1.2debian \
+    libxcb-randr0 \
+    bridge-utils \
+    openvpn \
+    libcanberra-gtk-module \
+    libv4l-0 \
+    libvirt-bin \
+    libxcb-shape0 \
+    libxtst6 \
+    qemu-kvm \
+    sudo \
+    zenity \
+    wget \
+    tree \
+    libssl1.0.0 \
+    libssl-dev && \
+    wget http://se.archive.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
+    dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
+    apt clean && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN mkdir /home/tizen
-RUN mkdir /home/tizen/bin
-COPY ./tizen_studio_3.7.bin /home/tizen
-RUN chmod +x /home/tizen/tizen_studio_3.7.bin
+RUN mkdir -p ${TIZEN_HOME}/bin && \
+    wget -q -O ${TIZEN_HOME}/tizen_sdk.bin ${TIZEN_SDK_URL} && \
+    chmod +x ${TIZEN_HOME}/tizen_sdk.bin
 
 RUN adduser --no-create-home --disabled-password --gecos ''  tizen && \
     chown -R tizen: /home/tizen && \
@@ -22,46 +59,10 @@ RUN adduser --no-create-home --disabled-password --gecos ''  tizen && \
     touch /home/tizen/.bashrc && \
     echo "PATH=$PATH:/home/tizen/bin" >> /home/tizen/.bashrc
 
-RUN apt-get install libcurl3-gnutls -y  && \
-    apt-get install expect  -y && \
-    apt-get install gettext  -y && \
-    apt-get install python2.7 -y  && \
-    apt-get install libwebkitgtk-1.0-0 -y  && \
-    apt-get install rpm2cpio  -y && \
-    apt-get install make  -y && \
-    apt-get install cpio  -y && \
-    apt-get install ruby -y && \
-	apt-get install libxcb-icccm4  -y && \
-	apt-get install libxcb-render-util0  -y && \
-	apt-get install libxcb-image0  -y && \
-	apt-get install acl  -y && \
-	apt-get install libsdl1.2debian  -y && \
-	apt-get install libxcb-randr0  -y && \
-	apt-get install bridge-utils  -y && \
-	apt-get install openvpn -y && \
-    apt-get install libcanberra-gtk-module  -y && \
-    apt-get install libv4l-0 -y && \
-    apt-get install libvirt-bin -y && \
-    apt-get install libxcb-shape0 -y && \
-    apt-get install libxtst6  -y && \
-    apt-get install qemu-kvm -y && \
-    apt-get install sudo  -y && \
-    apt-get install zenity  -y && \
-    apt-get install wget -y && \
-    apt-get install tree -y && \
-    apt-get install libssl1.0.0  -y && \
-    apt-get install libssl-dev -y && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    wget http://se.archive.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
-        dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb
-
-
 USER tizen
 WORKDIR /home/tizen
 RUN ls -la . 
-RUN yes | ./tizen_studio_3.7.bin
-
+RUN yes | ./tizen_sdk.bin
 
 WORKDIR /home/tizen/tizen-studio/package-manager
 RUN ./package-manager-cli.bin install --accept-license Baseline-SDK  && \
@@ -79,6 +80,3 @@ RUN ./package-manager-cli.bin install --accept-license Baseline-SDK  && \
 ENV PATH="/home/tizen/tizen-studio/tools/ide/bin/:${PATH}"
 ENV PATH="/home/tizen/tizen-studio/tools/:${PATH}"
 
-
-RUN tizen create web-project --name testProject --profile tv-5.0 --template WebBasicapplication -- /home/tizen/projects/ && \
-    tizen build-web -- /home/tizen/projects/testProject --output /home/tizen/projects/dist/

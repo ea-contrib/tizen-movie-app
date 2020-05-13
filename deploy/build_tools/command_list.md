@@ -8,9 +8,6 @@ mobile-2.3           WebSinglePageApplication
 mobile-2.3           WebBasicApplication
 mobile-2.3           WebNavigationApplicati
 
-
-
-
 3) tizen create web-project -n testProject -p mobile-2.4 -t WebBasicApplication -- ~/workspace/
 To create a tizen web project ‘tizen create’ command is used with the parameters:
 
