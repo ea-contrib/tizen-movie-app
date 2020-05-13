@@ -1,15 +1,14 @@
-windows
-1) install choco
-2) run prepare_env.ps1
+### windows
+1) install [choco](https://chocolatey.org/docs/installation)
+2) run `prepare_env.ps1`
 3) Then run Xlaunch from the start menu and follow the initial configuration steps (tick disable acess control checkbox and save config %userprofile%\Desktop)
 
-linux
+### linux
 everything is alreasy ok :)
 
-
-common (after startup)
+### common (after startup)
 1) wait until window will be shown
 2) press +
-3) certificate name : ea_cert
-4) author name: ea
-5) password: test1test
+3) certificate name : `ea_cert`
+4) author name: `ea`
+5) password: `test1test`
