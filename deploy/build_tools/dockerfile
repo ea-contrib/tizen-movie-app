@@ -42,8 +42,8 @@ RUN apt update -y && \
     wget \
     tree \
     libssl1.0.0 \
-    libssl-dev && \
-    wget http://se.archive.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
+    libssl-dev \
+    libpng-dev && \
     dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
