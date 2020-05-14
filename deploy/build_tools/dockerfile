@@ -50,27 +50,28 @@ RUN apt update -y && \
     rm -rf /var/lib/apt/lists/*
 
 RUN adduser --disabled-password --gecos ''  tizen && \
+    echo "tizen ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/tizen && \
     mkdir -p ${TIZEN_HOME}/bin && \
-    wget -q -O ${TIZEN_HOME}/tizen_sdk.bin ${TIZEN_SDK_URL} && \
-    chmod +x ${TIZEN_HOME}/tizen_sdk.bin
+    wget -O ${TIZEN_HOME}/tizen_sdk_${TIZEN_SDK_VER}.bin ${TIZEN_SDK_URL} && \
+    chmod +x ${TIZEN_HOME}/tizen_sdk_${TIZEN_SDK_VER}.bin
 
 USER tizen
 ENV PATH="${TIZEN_HOME}/bin:${PATH}"
 WORKDIR "${TIZEN_HOME}"
 RUN ls -la . && \
-    yes | ./tizen_sdk.bin
+    yes | ./tizen_sdk_${TIZEN_SDK_VER}.bin
 
 WORKDIR "${TIZEN_HOME}/tizen-studio/package-manager"
-RUN ./package-manager-cli.bin install --accept-license Baseline-SDK
-RUN ./package-manager-cli.bin install --accept-license NativeToolchain
-RUN ./package-manager-cli.bin install --accept-license TOOLS
-RUN ./package-manager-cli.bin install --accept-license EXTRAS
-RUN ./package-manager-cli.bin install --accept-license TV-SAMSUNG-Public && \
-	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Public-Emulator && \
-	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Public-WebAppDevelopment && \
-	./package-manager-cli.bin install --accept-license cert-add-on  && \
-	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Extension-Tools && \
-	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Extension-Resources
+RUN ./package-manager-cli.bin install --accept-license Baseline-SDK \
+    NativeToolchain \
+    TOOLS \
+    EXTRAS \
+    TV-SAMSUNG-Public \
+	TV-SAMSUNG-Public-Emulator \
+	TV-SAMSUNG-Public-WebAppDevelopment \
+	cert-add-on  \
+    TV-SAMSUNG-Extension-Tools \
+	TV-SAMSUNG-Extension-Resources
 
 ENV PATH="${TIZEN_HOME}/tizen-studio/tools/ide/bin:${PATH}"
 ENV PATH="${TIZEN_HOME}/tizen-studio/tools:${PATH}"

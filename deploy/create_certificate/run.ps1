@@ -1,6 +1,9 @@
 & ./env.ps1
 
-docker build -f createcertificate.dockerfile -t tizen-certificate .
+docker build -f createcertificate.dockerfile `
+--build-arg IMAGE=eacontrib/tizen-ide `
+--build-arg VERSION=latest `
+-t tizen-certificate .
 
 $env:DISPLAY= $env:host_ip + ":0.0"
 
@@ -9,4 +12,7 @@ $baseDir = Split-Path $baseDir
 
 write-host "$env:DISPLAY"
 
-docker run --network=host  -v $baseDir/certificates:/home/tizen/SamsungCertificate/ea_cert -it -e DISPLAY=$env:DISPLAY tizen-certificate
+docker run --network=host -it --rm `
+-v $baseDir/certificates:/home/tizen/SamsungCertificate/ea_cert `
+-e DISPLAY=$env:DISPLAY `
+-tizen-certificate

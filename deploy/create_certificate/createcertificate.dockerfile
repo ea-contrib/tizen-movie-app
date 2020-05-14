@@ -1,4 +1,5 @@
-FROM khudikea/ea_contrib:1.0.0
+ARG IMAGE
+ARG VERSION
+FROM ${IMAGE}:${VERSION}
 
-ENTRYPOINT /home/tizen/tizen-studio/tools/certificate-manager/certificate-manager && \
- /bin/sh
+ENTRYPOINT /home/tizen/tizen-studio/tools/certificate-manager/certificate-manager
