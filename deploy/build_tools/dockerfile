@@ -10,13 +10,14 @@ ENV LC_ALL C.UTF-8
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt update -y && \
-    apt install --no-install-recommends -y  \
+    apt install -y  \
     default-jdk \
     pciutils \
     zip \ 
     libcurl3-gnutls \
+    libglib2.0-0 \
     expect \
-    gettext  \
+    gettext \
     python2.7 \
     libwebkitgtk-1.0-0 \
     rpm2cpio \
@@ -42,40 +43,36 @@ RUN apt update -y && \
     wget \
     tree \
     libssl1.0.0 \
-    libssl-dev \
-    libpng-dev && \
+    libssl-dev && \
+    wget http://se.archive.ubuntu.com/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
+    dpkg -i libpng12-0_1.2.54-1ubuntu1_amd64.deb && rm libpng12-0_1.2.54-1ubuntu1_amd64.deb && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p ${TIZEN_HOME}/bin && \
+RUN adduser --disabled-password --gecos ''  tizen && \
+    mkdir -p ${TIZEN_HOME}/bin && \
     wget -q -O ${TIZEN_HOME}/tizen_sdk.bin ${TIZEN_SDK_URL} && \
     chmod +x ${TIZEN_HOME}/tizen_sdk.bin
 
-RUN adduser --no-create-home --disabled-password --gecos ''  tizen && \
-    chown -R tizen: /home/tizen && \
-    chmod -R 777 /home/tizen && \
-    usermod --home /home/tizen tizen && \
-    touch /home/tizen/.bashrc && \
-    echo "PATH=$PATH:/home/tizen/bin" >> /home/tizen/.bashrc
-
 USER tizen
-WORKDIR /home/tizen
-RUN ls -la . 
-RUN yes | ./tizen_sdk.bin
+ENV PATH="${TIZEN_HOME}/bin:${PATH}"
+WORKDIR "${TIZEN_HOME}"
+RUN ls -la . && \
+    yes | ./tizen_sdk.bin
 
-WORKDIR /home/tizen/tizen-studio/package-manager
-RUN ./package-manager-cli.bin install --accept-license Baseline-SDK  && \
-    ./package-manager-cli.bin install --accept-license TOOLS  && \
-    ./package-manager-cli.bin install --accept-license NativeToolchain && \
-	./package-manager-cli.bin install --accept-license EXTRAS && \
-	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Public && \
+WORKDIR "${TIZEN_HOME}/tizen-studio/package-manager"
+RUN ./package-manager-cli.bin install --accept-license Baseline-SDK
+RUN ./package-manager-cli.bin install --accept-license NativeToolchain
+RUN ./package-manager-cli.bin install --accept-license TOOLS
+RUN ./package-manager-cli.bin install --accept-license EXTRAS
+RUN ./package-manager-cli.bin install --accept-license TV-SAMSUNG-Public && \
 	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Public-Emulator && \
 	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Public-WebAppDevelopment && \
 	./package-manager-cli.bin install --accept-license cert-add-on  && \
 	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Extension-Tools && \
 	./package-manager-cli.bin install --accept-license TV-SAMSUNG-Extension-Resources
 
+ENV PATH="${TIZEN_HOME}/tizen-studio/tools/ide/bin:${PATH}"
+ENV PATH="${TIZEN_HOME}/tizen-studio/tools:${PATH}"
 
-ENV PATH="/home/tizen/tizen-studio/tools/ide/bin/:${PATH}"
-ENV PATH="/home/tizen/tizen-studio/tools/:${PATH}"
-
+CMD [ "/bin/bash" ]
