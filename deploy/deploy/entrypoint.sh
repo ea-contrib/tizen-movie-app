@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 sdb connect $TV_IP
 

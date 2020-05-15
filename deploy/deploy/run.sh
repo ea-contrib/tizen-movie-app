@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 ./env.sh
+export TV_IP='192.168.100.3'
 
-yes | cp "$pwd/../../src/tizen-client/dist/*.*" ./dist
+yes | cp $(dirname $(dirname $(pwd)))/src/tizen-client/dist/* ./dist
 
 docker build -f deploy.dockerfile -t tizen-deploy .
 

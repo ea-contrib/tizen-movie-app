@@ -1,3 +1,3 @@
-#!/bin/sh
+#!/bin/bash
 
-TV_IP='192.168.88.248'
+export TV_IP='192.168.100.3'
