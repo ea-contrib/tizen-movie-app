@@ -1,0 +1,43 @@
+version: '3.4'
+
+volumes:
+  tmarabbitmq: 
+
+services:
+
+
+  tmarabbitmq:
+    image: rabbitmq:3.7.13-management-alpine
+    environment:
+    - RABBITMQ_DEFAULT_USER=tma-user
+    - RABBITMQ_DEFAULT_VHOST=tma
+    - RABBITMQ_DEFAULT_PASS=tma-password
+    networks:
+      - internal-network
+    ports:
+     - '15676:15672'
+    volumes:
+     - 'tmarabbitmq:/var/lib/rabbitmq'
+    container_name: 'tmarabbitmq'
+    restart: 'unless-stopped'
+
+
+  tma.web:
+    image: ${DOCKER_REGISTRY-}tmaweb
+    build:
+      context: .
+      dockerfile: TMA.Web/Dockerfile
+
+  principalservice:
+    image: ${DOCKER_REGISTRY-}principalservice
+    build:
+      context: .
+      dockerfile: PrincipalService/Dockerfile
+
+
+  tma.identityservice:
+    image: ${DOCKER_REGISTRY-}tmaidentityservice
+    build:
+      context: .
+      dockerfile: TMA.IdentityService/Dockerfile
+

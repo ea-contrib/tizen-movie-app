@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  tma.web:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "9999:80"
+
+
+  tma.identityservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+
