@@ -123,3 +123,6 @@ dist
 /deploy/certificates/distributor.csr
 /deploy/certificates/distributor.p12
 /deploy/certificates/distributor.pri
+bin
+obj
+.suo
