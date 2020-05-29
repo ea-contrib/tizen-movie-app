@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TMA.PrincipalService": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

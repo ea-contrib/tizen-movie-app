@@ -1,22 +1,12 @@
-#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+ARG SLN_IMAGE
+FROM ${SLN_IMAGE} AS publish
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.3-alpine3.11 AS final
+
+
+ARG BUILD_CONFIGURATION=Debug
 WORKDIR /app
 EXPOSE 80
-EXPOSE 443
+COPY --from=publish /src/TMA.Web/bin/${BUILD_CONFIGURATION}/netcoreapp3.1/publish .
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
-WORKDIR /src
-COPY ["TMA.Web/TMA.Web.csproj", "TMA.Web/"]
-RUN dotnet restore "TMA.Web/TMA.Web.csproj"
-COPY . .
-WORKDIR "/src/TMA.Web"
-RUN dotnet build "TMA.Web.csproj" -c Release -o /app/build
-
-FROM build AS publish
-RUN dotnet publish "TMA.Web.csproj" -c Release -o /app/publish
-
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "TMA.Web.dll"]

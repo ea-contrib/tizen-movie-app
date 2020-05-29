@@ -124,7 +124,7 @@ namespace TMA.MessageBus
                     try
                     {
                         var responseBody = @event.Body;
-                        var responseMessage = Encoding.UTF8.GetString(responseBody);
+                        var responseMessage = Encoding.UTF8.GetString(responseBody.ToArray());
                         var responseMessageObj = _options.MessageSerializer.Deserialize<TResult>(responseMessage);
 
                         tcs.SetResult(responseMessageObj);
@@ -191,7 +191,7 @@ namespace TMA.MessageBus
                 {
                     var body = ea.Body;
 
-                    var message = Encoding.UTF8.GetString(body);
+                    var message = Encoding.UTF8.GetString(body.ToArray());
                     var requestMessage = _options.MessageSerializer.Deserialize<TRequest>(message);
 
 
@@ -252,7 +252,7 @@ namespace TMA.MessageBus
                 {
                     var body = ea.Body;
 
-                    var message = Encoding.UTF8.GetString(body);
+                    var message = Encoding.UTF8.GetString(body.ToArray());
                     var requestMessage = _options.MessageSerializer.Deserialize<TRequest>(message);
 
 

@@ -2,10 +2,12 @@ version: '3.4'
 
 volumes:
   tmarabbitmq: 
+  logs-tma: 
+  
+networks:
+  internal-network:
 
 services:
-
-
   tmarabbitmq:
     image: rabbitmq:3.7.13-management-alpine
     environment:
@@ -21,23 +23,79 @@ services:
     container_name: 'tmarabbitmq'
     restart: 'unless-stopped'
 
+  start-dependencies:
+    image: 'dadarek/wait-for-dependencies:0.1'
+    tty: true
+    command: 'ppl.rabbit:5672'
+    networks:
+      - internal-network
+    stdin_open: true
+    depends_on:
+    - 'tmarabbitmq'
+    - 'tma.sln'
+    container_name: 'tma.start.dependencies'
+
+  tma.sln:
+    image: ${DOCKER_REGISTRY-}tma.sln
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_CONFIGURATION: ${BUILD_CONFIGURATION:-Debug}
 
   tma.web:
     image: ${DOCKER_REGISTRY-}tmaweb
+    container_name: tma.web
+    networks:
+      - internal-network
+    depends_on:
+      - start-dependencies
     build:
       context: .
       dockerfile: TMA.Web/Dockerfile
+      args:
+        SLN_IMAGE: ${DOCKER_REGISTRY-}tma.sln
+        BUILD_CONFIGURATION: ${BUILD_CONFIGURATION:-Debug}
+    restart: "unless-stopped"
+    environment:
+      - DOTNETCORE_ENVIRONMENT=${RUN_ENVIRONMENT:-Development}
+    volumes:
+      - 'logs-tma:/var/log/tma'
 
-  principalservice:
-    image: ${DOCKER_REGISTRY-}principalservice
+  tma.principalservice:
+    image: ${DOCKER_REGISTRY-}tmaprincipalservice
+    container_name: tma.principalservice
+    networks:
+      - internal-network
+    depends_on:
+      - start-dependencies
     build:
       context: .
-      dockerfile: PrincipalService/Dockerfile
-
+      dockerfile: TMA.PrincipalService/Dockerfile
+      args:
+        SLN_IMAGE: ${DOCKER_REGISTRY-}tma.sln
+        BUILD_CONFIGURATION: ${BUILD_CONFIGURATION:-Debug}
+    restart: "unless-stopped"
+    environment:
+      - DOTNETCORE_ENVIRONMENT=${RUN_ENVIRONMENT:-Development}
+    volumes:
+      - 'logs-tma:/var/log/tma'
 
   tma.identityservice:
     image: ${DOCKER_REGISTRY-}tmaidentityservice
+    container_name: tma.identityservice
+    networks:
+      - internal-network
+    depends_on:
+      - start-dependencies
     build:
       context: .
       dockerfile: TMA.IdentityService/Dockerfile
-
+      args:
+        SLN_IMAGE: ${DOCKER_REGISTRY-}tma.sln
+        BUILD_CONFIGURATION: ${BUILD_CONFIGURATION:-Debug}
+    restart: "unless-stopped"
+    environment:
+      - DOTNETCORE_ENVIRONMENT=${RUN_ENVIRONMENT:-Development}
+    volumes:
+      - 'logs-tma:/var/log/tma'
