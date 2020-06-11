@@ -6,6 +6,8 @@ import { MemoryRouter } from "react-router-dom";
 import { default as App } from "./src/App";
 import { store } from "./src/Store";
 
+import "./index.styl"
+
 ReactDOM.render(
   <MemoryRouter>
     <Provider store={store}>

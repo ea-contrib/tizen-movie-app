@@ -1,58 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Tizen Application</title>
-    <style>
-        body {
-            background: lightblue;
-        }
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
 
-        .preloader {
-            display: inline-block;
-            position: relative;
-            width: 64px;
-            height: 64px;
-        }
+    <title>Movies</title>
 
-        .preloader:after {
-            content: " ";
-            display: block;
-            border-radius: 50%;
-            width: 0;
-            height: 0;
-            margin: 6px;
-            box-sizing: border-box;
-            border: 26px solid #fff;
-            border-color: #fff transparent #fff transparent;
-            animation: lds-hourglass 3.2s infinite;
-        }
+    <link rel="shortcut icon" href="img/favicon.ico" />
 
-        @keyframes lds-hourglass {
-            0% {
-                transform: rotate(0);
-                animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
-            }
-            50% {
-                transform: rotate(900deg);
-                animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-            }
-            100% {
-                transform: rotate(1800deg);
-            }
-        }
-
-        .preloader__container {
-            text-align: center;
-        }
-
-    </style>
-</head>
-<body>
-<div class="app">
-    <div class="preloader__container">
-        <div class="preloader"></div>
+    <!-- <link href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap" rel="stylesheet"> -->
+    <link href="/styles/preloader.css" rel="stylesheet" />
+    <link href="/styles/normalize.css" rel="stylesheet" />
+    <link href="/styles/normalize.overrides.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="app__wrapper">
+      <div class="app">
+        <div class="preloader__container">
+          <div class="preloader"></div>
+        </div>
+      </div>
     </div>
-</div>
-</body>
+  </body>
 </html>

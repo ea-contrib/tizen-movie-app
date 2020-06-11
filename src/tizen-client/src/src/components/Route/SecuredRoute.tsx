@@ -1,5 +1,8 @@
 import * as React from "react";
 import { Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+
+import { ReduxState } from "../../Store";
 
 interface IProps {
   exact?: boolean;
@@ -26,4 +29,11 @@ const SecuredRoute = ({ component: Component, ...otherProps }: IProps) => {
     </>
   );
 };
-export default SecuredRoute;
+
+const mapStateToProps = (state: ReduxState) => ({
+  authenticated: state.data.auth.isAuthenticated,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SecuredRoute);

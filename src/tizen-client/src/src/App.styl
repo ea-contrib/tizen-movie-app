@@ -1,0 +1,40 @@
+.main
+    position relative
+    width 100%
+    overflow hidden
+    z-index 20
+    background-color transparent
+
+.main:before
+    z-index -1
+    content ""
+    position absolute
+    top 0 
+    left 0
+    width 100% 
+    height 100%
+    background-image url("../img/main-bg.jpg")
+    filter opacity(0.3) blur(20px)
+    background-size cover
+
+.movies
+    display flex
+    flex-wrap wrap
+
+.movies__item-wrapper
+    margin 1rem
+
+.movie--focused
+    transform scale(1.08)
+
+.movie__description-wrapper
+    color rgba(255, 255, 255, 0.84)
+    text-align center
+
+.movie-description__name
+    font-size 1.1rem
+    font-weight bold
+
+.main__movies_wrapper
+    margin-top 1rem
+

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 
 import { ReduxState } from "../../Store";
+import { MoviesList } from "../../components";
 import { fetchMovies, getMovie } from "../../services/movies";
 import { Movie, MoviesFilter } from "../../models";
 
@@ -24,13 +25,11 @@ class Home extends React.Component<Props, State> {
   render() {
     return (
       <>
-        <div>Home</div>
-        {this.props.fetchedMovies[0] && (
-          <div onClick={() => this.props.getMovie(this.props.fetchedMovies[0].id)}>
-            <div>{this.props.fetchedMovies[0].name}</div>
-            <img src={this.props.fetchedMovies[0].posterUrl} />
-          </div>
-        )}
+        <div className="main__filter-wrapper"></div>
+
+        <div className="main__movies-wrapper">
+          <MoviesList movies={this.props.fetchedMovies} />
+        </div>
       </>
     );
   }

@@ -1,1 +1,2 @@
-export { default as NavigationBar } from "./NavigationBar";
+export { MoviesList } from "./List/MoviesList";
+export { MovieCard } from "./Card/MovieCard";
