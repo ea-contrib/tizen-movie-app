@@ -1,0 +1,35 @@
+:root
+    --main-background-color #141D2C;
+    --active-text-color white;
+    --main-text-color rgba(255, 255, 255, 0.7);
+    --active-menu-background-color #1E2A3F;
+    --main-input-background-color #2D3144
+
+.app__wrapper
+    width 100%
+    height auto
+    min-height 100%
+    display flex
+    flex-direction row
+
+.app
+    background-color var(--main-background-color)
+    width 100%
+    display flex
+    flex-direction column
+
+.header__wrapper
+    width 100%
+    height 6rem
+
+.main__wrapper
+    width 100%
+    flex 1 0 auto
+    display flex
+
+.footer__wrapper
+    flex-shrink 0
+
+*:focus
+    border 1px solid red !important
+

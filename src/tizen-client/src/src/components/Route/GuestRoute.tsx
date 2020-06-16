@@ -1,5 +1,8 @@
 import * as React from "react";
 import { Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+
+import { ReduxState } from "../../Store";
 
 interface Props {
   exact?: boolean;
@@ -26,4 +29,11 @@ const GuestRoute = ({ component: Component, ...otherProps }: Props) => {
     </>
   );
 };
-export default GuestRoute;
+
+const mapStateToProps = (state: ReduxState) => ({
+  authenticated: state.data.auth.isAuthenticated,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GuestRoute);
