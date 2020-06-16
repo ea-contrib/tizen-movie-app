@@ -13,7 +13,6 @@ interface Props extends RouteComponentProps<PathParams> {
   moviesFilter: MoviesFilter;
 
   fetchMovies: (filter: MoviesFilter) => void;
-  getMovie: (id: string) => void;
 }
 interface State {}
 
@@ -22,13 +21,20 @@ class Home extends React.Component<Props, State> {
     this.props.fetchMovies(this.props.moviesFilter);
   }
 
+  openMovie(movie: Movie) {
+    this.props.history.push("/movies/" + movie.id);
+  }
+
   render() {
     return (
       <>
         <div className="main__filter-wrapper"></div>
 
         <div className="main__movies-wrapper">
-          <MoviesList movies={this.props.fetchedMovies} />
+          <MoviesList
+            movies={this.props.fetchedMovies}
+            itemClickAction={this.openMovie.bind(this)}
+          />
         </div>
       </>
     );
@@ -42,7 +48,6 @@ const mapStateToProps = (state: ReduxState) => ({
 
 const mapDispatchToProps = {
   fetchMovies: fetchMovies,
-  getMovie: getMovie,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));

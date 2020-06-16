@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { History } from "history"
+import { History } from "history";
 
 import * as api from "./api";
 import * as types from "./types";
@@ -18,7 +18,7 @@ export const login = (history: History) => (
         type: types.LOGIN_SUCCESS,
         payload: data,
       });
-      history.push('/')
+      history.push("/");
     })
     .catch((error) => {
       dispatch<types.LoginAction>({
@@ -28,7 +28,9 @@ export const login = (history: History) => (
     });
 };
 
-export const logout = (history: History) => (dispatch: Dispatch<types.LogoutAction>) => {
+export const logout = (history: History) => (
+  dispatch: Dispatch<types.LogoutAction>
+) => {
   dispatch<types.LogoutAction>({
     type: types.LOGOUT_REQUEST,
   });
@@ -39,7 +41,7 @@ export const logout = (history: History) => (dispatch: Dispatch<types.LogoutActi
       dispatch<types.LogoutAction>({
         type: types.LOGOUT_SUCCESS,
       });
-      history.push('/')
+      history.push("/");
     })
     .catch((error) => {
       dispatch<types.LogoutAction>({

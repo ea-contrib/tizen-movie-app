@@ -1,4 +1,5 @@
 import { Dispatch } from "redux";
+import { History } from "history";
 
 import { MoviesFilter } from "../../models";
 
