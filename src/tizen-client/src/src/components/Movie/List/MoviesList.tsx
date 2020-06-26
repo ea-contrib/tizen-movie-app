@@ -9,7 +9,7 @@ import "./MoviesList.styl";
 interface Props {
   movies: Array<Movie>;
 
-  itemClickAction: Function;
+  onItemClick: (movie: Movie) => void;
 }
 interface State {}
 
@@ -22,7 +22,7 @@ export class MoviesList extends React.Component<Props, State> {
             <div className="movies__item-wrapper">
               <MovieCard
                 movie={movie}
-                clickAction={this.props.itemClickAction}
+                onClick={this.props.onItemClick}
               />
             </div>
           </div>
