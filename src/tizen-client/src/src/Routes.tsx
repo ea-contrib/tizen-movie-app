@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Route, Switch } from "react-router-dom";
-import { About, Authorization, Profile, Home, NotFound } from "./screens";
+import { About, Authorization, Profile, Home, MovieDetails, NotFound } from "./screens";
 import { GuestRoute, SecuredRoute } from "./components";
 
 interface Props {}
@@ -18,6 +18,7 @@ class Routes extends React.Component<Props, State> {
           exact={true}
           component={Authorization}
         />
+        <SecuredRoute path="/movies/:id" component={MovieDetails} />
         <SecuredRoute path="/profile" exact={true} component={Profile} />
         <Route component={NotFound} />
       </Switch>

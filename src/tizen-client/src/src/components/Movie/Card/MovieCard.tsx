@@ -7,13 +7,15 @@ import "./MovieCard.styl";
 
 interface Props {
   movie: Movie;
+
+  onClick: (movie: Movie) => void;
 }
 interface State {}
 
 export class MovieCard extends React.Component<Props, State> {
   render() {
     return (
-      <div className="movie">
+      <div className="movie" onClick={() => this.props.onClick(this.props.movie)}>
         <div className="movie__poster">
           <MoviePoster url={this.props.movie.posterUrl} />
         </div>
