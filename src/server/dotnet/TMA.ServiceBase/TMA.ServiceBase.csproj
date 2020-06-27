@@ -15,4 +15,8 @@
     <PackageReference Include="NLog.Extensions.Logging" Version="1.6.4" />
     <PackageReference Include="NLog" Version="4.7.2" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TMA.Contracts\TMA.Contracts.csproj" />
+    <ProjectReference Include="..\TMA.MessageBus\TMA.MessageBus.csproj" />
+  </ItemGroup>
 </Project>

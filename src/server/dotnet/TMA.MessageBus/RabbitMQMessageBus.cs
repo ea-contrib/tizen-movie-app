@@ -12,7 +12,8 @@ namespace TMA.MessageBus
     {
         private readonly RabbitMQMessageBusOptions _options;
         private readonly ILogger<RabbitMQMessageBus> _logger;
-        private readonly IConnection _connection;
+        private readonly Lazy<IConnection> _connection;
+        private const int ConnectionAttempts = 5;
 
         public RabbitMQMessageBus(RabbitMQMessageBusOptions options, ILogger<RabbitMQMessageBus> logger = null)
         {
@@ -33,7 +34,25 @@ namespace TMA.MessageBus
                 UseBackgroundThreadsForIO = options.UseBackgroundThreadsForIO,
             };
 
-            _connection = factory.CreateConnection();
+            _connection = new Lazy<IConnection>(() =>
+            {
+                var attempt = 1;
+
+                while (attempt < ConnectionAttempts)
+                {
+                    try
+                    {
+                        return factory.CreateConnection();
+                    }
+                    catch (Exception)
+                    {
+                        attempt++;
+                        Thread.Sleep(4000);
+                    }
+                }
+
+                throw new InvalidOperationException();
+            });
         }
 
         private string GetQueueName(Type type)
@@ -57,7 +76,7 @@ namespace TMA.MessageBus
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
 
-            using (var channel = _connection.CreateModel())
+            using (var channel = _connection.Value.CreateModel())
             {
                 channel.QueueDeclare(queue: GetQueueName(typeof(TRequest)),
                     durable: false,
@@ -86,7 +105,7 @@ namespace TMA.MessageBus
 
             var tcs = new TaskCompletionSource<TResult>(TaskCreationOptions.RunContinuationsAsynchronously);
             string replyTo = GetReplyQueueName(typeof(TRequest));
-            using (var channel = _connection.CreateModel())
+            using (var channel = _connection.Value.CreateModel())
             {
                 channel.QueueDeclare(queue: GetQueueName(typeof(TRequest)),
                     durable: false,
@@ -115,7 +134,7 @@ namespace TMA.MessageBus
             }
 
 
-            using (var responseChannel = _connection.CreateModel())
+            using (var responseChannel = _connection.Value.CreateModel())
             {
                 var consumer = new AsyncEventingBasicConsumer(responseChannel);
 
@@ -176,7 +195,7 @@ namespace TMA.MessageBus
         {
             if (process == null) throw new ArgumentNullException(nameof(process));
 
-            var channel = _connection.CreateModel();
+            var channel = _connection.Value.CreateModel();
 
             channel.QueueDeclare(queue: GetQueueName(typeof(TRequest)),
                 durable: false,
@@ -199,7 +218,7 @@ namespace TMA.MessageBus
 
                     var responseText = response != null ? Encoding.UTF8.GetBytes(_options.MessageSerializer.Serialize(response)) : null;
 
-                    using (var responseChannel = _connection.CreateModel())
+                    using (var responseChannel = _connection.Value.CreateModel())
                     {
                         var queueName = ea.BasicProperties.ReplyTo;
                         responseChannel.QueueDeclare(queue: queueName,
@@ -237,7 +256,7 @@ namespace TMA.MessageBus
         {
             if (process == null) throw new ArgumentNullException(nameof(process));
 
-            var channel = _connection.CreateModel();
+            var channel = _connection.Value.CreateModel();
 
             channel.QueueDeclare(queue: GetQueueName(typeof(TRequest)),
                 durable: false,

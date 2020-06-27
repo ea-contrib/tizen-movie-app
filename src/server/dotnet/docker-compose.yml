@@ -8,6 +8,20 @@ networks:
   internal-network:
 
 services:
+  tma.reverse.proxy:
+    image: nginx:1.17.10
+    container_name: tma.reverse.proxy
+    networks:
+      - internal-network
+    depends_on:
+      - tma.identityservice
+      - tma.web
+    ports:
+      - 9999:80
+    build:
+      context: ./Automation
+      dockerfile: nginx.Dockerfile
+
   tmarabbitmq:
     image: rabbitmq:3.7.13-management-alpine
     environment:
@@ -91,6 +105,25 @@ services:
     build:
       context: .
       dockerfile: TMA.IdentityService/Dockerfile
+      args:
+        SLN_IMAGE: ${DOCKER_REGISTRY-}tma.sln
+        BUILD_CONFIGURATION: ${BUILD_CONFIGURATION:-Debug}
+    restart: "unless-stopped"
+    environment:
+      - DOTNETCORE_ENVIRONMENT=${RUN_ENVIRONMENT:-Development}
+    volumes:
+      - 'logs-tma:/var/log/tma'
+
+  tma.movieservice:
+    image: ${DOCKER_REGISTRY-}tmamovieservice
+    container_name: tma.movieservice
+    networks:
+      - internal-network
+    depends_on:
+      - start-dependencies
+    build:
+      context: .
+      dockerfile: TMA.MovieService/Dockerfile
       args:
         SLN_IMAGE: ${DOCKER_REGISTRY-}tma.sln
         BUILD_CONFIGURATION: ${BUILD_CONFIGURATION:-Debug}

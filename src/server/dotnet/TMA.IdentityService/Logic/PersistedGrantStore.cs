@@ -5,58 +5,60 @@ using System.Threading.Tasks;
 using AutoMapper;
 using IdentityServer4.Models;
 using IdentityServer4.Stores;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Driver;
+using TMA.MessageBus;
 
 namespace TMA.IdentityService.Logic
 {
     public class PersistedGrantStore : IPersistedGrantStore
     {
-        private readonly Func<IMongoDatabase> _mongoDbFactory;
-        private IMongoDatabase Client => _mongoDbFactory();
+        private readonly IMessageBus _messageBus;
 
-        public PersistedGrantStore(Func<IMongoDatabase> mongoDbFactory)
+        public PersistedGrantStore(IMessageBus messageBus)
         {
-            _mongoDbFactory = mongoDbFactory;
+            _messageBus = messageBus ?? throw new ArgumentNullException(nameof(messageBus));
         }
 
-        public Task StoreAsync(PersistedGrant grant)
+        public async Task StoreAsync(PersistedGrant grant)
         {
-            return Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
-                .ReplaceOneAsync(x => x.Key == grant.Key, new PersistedGrantDocument(grant), new ReplaceOptions() { IsUpsert = true });
+            // return Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
+            //     .ReplaceOneAsync(x => x.Key == grant.Key, new PersistedGrantDocument(grant), new ReplaceOptions() { IsUpsert = true });
         }
 
         public async Task<PersistedGrant> GetAsync(string key)
         {
-            var item = await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
-                .FindAsync(x => x.Key == key);
-            return item.SingleOrDefault()?.AsGrant();
+            // var item = await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
+            //     .FindAsync(x => x.Key == key);
+            // return item.SingleOrDefault()?.AsGrant();
+
+            return new PersistedGrant();
         }
 
         public async Task<IEnumerable<PersistedGrant>> GetAllAsync(string subjectId)
         {
-            var item = await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
-                .FindAsync(x => x.SubjectId == subjectId);
-            return item.ToList().Select(x => x.AsGrant());
+            // var item = await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
+            //     .FindAsync(x => x.SubjectId == subjectId);
+            // return item.ToList().Select(x => x.AsGrant());
+
+            return new List<PersistedGrant>();
         }
 
         public async Task RemoveAsync(string key)
         {
-            await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
-                .DeleteManyAsync(x => x.Key == key);
+            // await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
+            //     .DeleteManyAsync(x => x.Key == key);
         }
 
         public async Task RemoveAllAsync(string subjectId, string clientId)
         {
-            await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
-                .DeleteManyAsync(x => x.SubjectId == subjectId && x.ClientId == clientId);
+            // await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
+            //     .DeleteManyAsync(x => x.SubjectId == subjectId && x.ClientId == clientId);
         }
 
         public async Task RemoveAllAsync(string subjectId, string clientId, string type)
         {
-            await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
-                .DeleteManyAsync(x => x.SubjectId == subjectId && x.ClientId == clientId && x.Type == type);
+            // await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
+            //     .DeleteManyAsync(x => x.SubjectId == subjectId && x.ClientId == clientId && x.Type == type);
+
         }
 
         private class PersistedGrantDocument
@@ -93,9 +95,6 @@ namespace TMA.IdentityService.Logic
             /// <summary>
             /// Gets or sets the identifier.
             /// </summary>
-            [BsonId]
-            [BsonRepresentation(BsonType.ObjectId)]
-            [BsonIgnoreIfDefault]
             public string Id { get; set; }
 
             /// <summary>Gets or sets the key.</summary>

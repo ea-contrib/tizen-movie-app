@@ -9,6 +9,11 @@ namespace TMA.Contracts.Messages
     }
     public class ResponseMessage<TValue>
     {
+        public ResponseMessage() { }
+        public ResponseMessage(TValue value)
+        {
+            Value = value;
+        }
         public TValue Value { get; set; }
     }
 }

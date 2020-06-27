@@ -2,6 +2,7 @@
 using TMA.IdentityService.Handlers;
 using TMA.IdentityService.Logic;
 using TMA.IdentityService.ResponseHandling;
+using TMA.MessageBus;
 
 namespace TMA.IdentityService
 {
@@ -9,6 +10,8 @@ namespace TMA.IdentityService
     {
         protected override void Load(ContainerBuilder builder)
         {
+
+            builder.RegisterServiceBus();
 
             builder.RegisterType<UserStore>()
                 .AsSelf()

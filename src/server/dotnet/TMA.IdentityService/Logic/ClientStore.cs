@@ -5,23 +5,18 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Sustainsys.Saml2;
 using Sustainsys.Saml2.AspNetCore2;
-using Sustainsys.Saml2.Configuration;
-using Sustainsys.Saml2.Metadata;
 using TMA.Configuration;
 using TMA.IdentityService.Contracts;
 using TMA.IdentityService.Handlers;
@@ -44,9 +39,6 @@ namespace TMA.IdentityService.Logic
         public IDataProtectionProvider DataProtectionProvider { get; }
         public ILoggerFactory LoggerFactory { get; }
         public UserStore UserStore { get; }
-
-
-        private const string SamlCertificateFileName = "ppl_saml_cert.pfx";
 
         public ClientStore(
             IAuthenticationSchemeProvider schemeProvider,
