@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using TMA.Contracts.Dto;
 using TMA.Contracts.Messages;
 using TMA.MessageBus;
+using TMA.PrincipalService.Logic;
 
 namespace TMA.PrincipalService
 {

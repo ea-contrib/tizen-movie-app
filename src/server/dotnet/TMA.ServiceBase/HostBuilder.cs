@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 
-namespace PPL.Hoster
+namespace TMA.ServiceBase
 {
     public class HostBuilder<T> : HostBuilder
         where T : StartupBase, new()

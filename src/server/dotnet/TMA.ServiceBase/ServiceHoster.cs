@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using NLog;
 
-namespace PPL.Hoster
+namespace TMA.ServiceBase
 {
     public static class ServiceHoster
     {

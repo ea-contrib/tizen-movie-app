@@ -22,6 +22,16 @@ services:
       context: ./Automation
       dockerfile: nginx.Dockerfile
 
+  tmadb:
+    image: postgres:12.3-alpine
+    restart: always
+    networks:
+      - internal-network
+    environment:
+      POSTGRES_PASSWORD: test
+      POSTGRES_USER: test_user
+      POSTGRES_DB: test_db
+
   tmarabbitmq:
     image: rabbitmq:3.7.13-management-alpine
     environment:

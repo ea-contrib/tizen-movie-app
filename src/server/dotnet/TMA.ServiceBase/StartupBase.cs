@@ -5,8 +5,9 @@ using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TMA.Migration;
 
-namespace PPL.Hoster
+namespace TMA.ServiceBase
 {
     public class StartupBase
     {
@@ -26,6 +27,8 @@ namespace PPL.Hoster
             var assembliesInAppDomain = AppDomain.CurrentDomain.GetAssemblies().ToArray();
             builder.RegisterAssemblyModules(assembliesInAppDomain);
 
+            builder.RegisterMigrator();
+
         }
 
         /// <summary>
@@ -38,9 +41,11 @@ namespace PPL.Hoster
             IConfiguration configuration)
         { }
 
-        public virtual Task PrepareEnvironmentAsync(IServiceProvider serviceProvider)
+        public virtual async Task PrepareEnvironmentAsync(IServiceProvider serviceProvider)
         {
-            return Task.CompletedTask;
+            var migrator = serviceProvider.GetService<DbMigrator>();
+
+            await migrator.MigrateUp();
         }
     }
 }

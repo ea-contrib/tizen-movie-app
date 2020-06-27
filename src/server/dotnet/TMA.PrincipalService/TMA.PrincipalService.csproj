@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TMA.Identity\TMA.Identity.csproj" />
     <ProjectReference Include="..\TMA.ServiceBase\TMA.ServiceBase.csproj" />
   </ItemGroup>
 </Project>

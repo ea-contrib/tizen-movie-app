@@ -1,5 +1,8 @@
 ﻿using Autofac;
+using TMA.Data.Common;
 using TMA.MessageBus;
+using TMA.PrincipalService.Logic;
+using TMA.PrincipalService.Repositories;
 
 namespace TMA.PrincipalService
 {
@@ -11,7 +14,15 @@ namespace TMA.PrincipalService
 
             builder.RegisterServiceBus();
 
+            builder.RegisterDataContext();
+
             builder.RegisterType<PrincipalBlo>()
+                .SingleInstance();
+
+            builder.RegisterType<PrincipalRepository>()
+                .SingleInstance();
+
+            builder.RegisterType<PasswordHasher>()
                 .SingleInstance();
         }
     }

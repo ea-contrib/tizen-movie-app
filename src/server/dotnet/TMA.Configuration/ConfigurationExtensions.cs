@@ -15,13 +15,15 @@ namespace TMA.Configuration
             return configuration["IdentityServer:Audience"];
         }
 
+        public static string GetDbConnectionString(this IConfiguration configuration)
+        {
+            return configuration["Database:ConnectionString"];
+        }
+
+
         //__________________________________________________________________
 
-        public static string GetDbConnectionString(this IConfiguration configuration, string name)
-        {
-            return configuration[$"connection-strings:{name}"];
-        }
-       
+
         public static string PostmanClientSecret(this IConfiguration configuration)
         {
             return "test";

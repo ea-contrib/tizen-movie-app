@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using PPL.Hoster;
+using TMA.ServiceBase;
 
 namespace TMA.PrincipalService
 {
