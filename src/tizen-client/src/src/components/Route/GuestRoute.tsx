@@ -17,7 +17,7 @@ const GuestRoute = ({ component: Component, ...otherProps }: Props) => {
   }
   return (
     <>
-      <header>Guest Header</header>
+      {/* <header>Guest Header</header> */}
       <Route
         render={(otherProps) => (
           <>
@@ -25,7 +25,7 @@ const GuestRoute = ({ component: Component, ...otherProps }: Props) => {
           </>
         )}
       />
-      <footer>Guest Footer</footer>
+      {/* <footer>Guest Footer</footer> */}
     </>
   );
 };
