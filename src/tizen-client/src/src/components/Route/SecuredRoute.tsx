@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ReactNode } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -7,24 +8,18 @@ import { ReduxState } from "../../Store";
 interface IProps {
   exact?: boolean;
   path: string;
-  component: React.ComponentType<any>;
+  children: ReactNode,
   authenticated: boolean;
 }
 
-const SecuredRoute = ({ component: Component, ...otherProps }: IProps) => {
-  if (otherProps.authenticated === false) {
+const SecuredRoute = ({ children, ...otherProps }: IProps) => {
+   if (!otherProps.authenticated) {
     return <Redirect to="/authorization" />;
   }
   return (
     <>
       {/* <header>User Header</header> */}
-      <Route
-        render={(otherProps) => (
-          <>
-            <Component {...otherProps} />
-          </>
-        )}
-      />
+      <Route {...otherProps} children={children}  />
       {/* <footer>User Footer</footer> */}
     </>
   );

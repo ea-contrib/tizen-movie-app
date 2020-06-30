@@ -24,7 +24,12 @@ interface State {}
 
 class MovieDetails extends React.Component<Props, State> {
   componentDidMount() {
+    console.log(this.props.match.params.id);
     this.props.getMovie(this.props.match.params.id);
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+    console.log(this.props.match.params.id);
   }
 
   render() {

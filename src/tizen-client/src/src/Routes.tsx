@@ -11,15 +11,21 @@ class Routes extends React.Component<Props, State> {
   render() {
     return (
       <Switch>
-        <Route path="/" exact={true} component={Home} />
+        <Route path="/" exact={true} >
+            <Home />
+        </Route>
         <Route path="/about" exact={true} component={About} />
         <GuestRoute
           path="/authorization"
           exact={true}
           component={Authorization}
         />
-        <SecuredRoute path="/movies/:id" component={MovieDetails} />
-        <SecuredRoute path="/profile" exact={true} component={Profile} />
+          <SecuredRoute path="/movies/:id" >
+              <MovieDetails/>
+          </SecuredRoute>
+          <SecuredRoute path="/profile" exact={true} >
+              <Profile />
+          </SecuredRoute>
         <Route component={NotFound} />
       </Switch>
     );
