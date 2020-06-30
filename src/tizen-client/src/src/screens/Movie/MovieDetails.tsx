@@ -19,16 +19,20 @@ interface Props extends RouteComponentProps<PathParams> {
 
   getMovie: (id: string) => void;
   openMovie: (movie: Movie) => void;
+  play: (id: string) => void;
 }
 interface State {}
 
 class MovieDetails extends React.Component<Props, State> {
   componentDidMount() {
-    console.log(this.props.match.params.id);
     this.props.getMovie(this.props.match.params.id);
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+  componentDidUpdate(
+    prevProps: Readonly<Props>,
+    prevState: Readonly<State>,
+    snapshot?: any
+  ): void {
     console.log(this.props.match.params.id);
   }
 
@@ -36,12 +40,12 @@ class MovieDetails extends React.Component<Props, State> {
     return (
       <div className="main__movie-wrapper">
         <div className="page__header">
-          <i
+          <div
             className="page__button button-go-back"
             onClick={() => this.props.history.goBack()}
           >
             &#8592;
-          </i>
+          </div>
           <h2 className="header__title">Watch now</h2>
         </div>
         {this.props.movie !== null && (
@@ -51,7 +55,9 @@ class MovieDetails extends React.Component<Props, State> {
                 <h2 className="movie__title">{this.props.movie.name}</h2>
                 <div className="movie__meta">
                   <div className="movie__meta-param">8.7/10</div>
-                  <div className="movie__meta-param">Action, Adventure, Sci-Fi</div>
+                  <div className="movie__meta-param">
+                    Action, Adventure, Sci-Fi
+                  </div>
                 </div>
               </div>
               <div className="movie__details">
@@ -65,18 +71,22 @@ class MovieDetails extends React.Component<Props, State> {
                     planting an idea into the mind of a C.E.O.
                   </div>
                   <div className="movie__buttons">
-                    <i
+                    <div
                       className="page__button "
-                      onClick={() => this.props.history.goBack()}
+                      onClick={() =>
+                        this.props.movie !== null
+                          ? this.props.play(this.props.movie.id)
+                          : console.log("Cannot fetch movie")
+                      }
                     >
                       Play
-                    </i>
-                    <i
+                    </div>
+                    <div
                       className="page__button "
                       onClick={() => this.props.history.goBack()}
                     >
                       Like
-                    </i>
+                    </div>
                   </div>
                 </div>
                 <div className="movie__parameters">
@@ -125,6 +135,7 @@ const mapDispatchToProps = (
   getMovie: (id: string) => getMovie(id)(dispatch),
 
   openMovie: (movie: Movie) => props.history.push("/movies/" + movie.id),
+  play: (id: string) => props.history.push("/play/" + id),
 });
 
 export default withRouter(

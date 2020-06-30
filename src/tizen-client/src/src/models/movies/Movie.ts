@@ -4,4 +4,5 @@ export interface Movie {
   year: number;
   rating: number;
   posterUrl: string;
+  videoUrl: string;
 }

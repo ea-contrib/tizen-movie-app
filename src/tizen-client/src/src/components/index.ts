@@ -1,5 +1,6 @@
-export { Sidebar } from "./Sidebar";
-export { Footer } from "./Footer";
-export { MovieCard, MoviePoster, MoviesList } from "./Movie";
+export * from "./Sidebar";
+export * from "./Footer";
+export * from "./Movie";
+export * from "./Player";
 
 export { GuestRoute, SecuredRoute } from "./Route";
