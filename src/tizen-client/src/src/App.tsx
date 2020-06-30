@@ -1,19 +1,32 @@
 import * as React from "react";
 import { connect } from "react-redux";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 import Routes from "./Routes";
 import { Sidebar, Footer } from "./components";
 import { ReduxState } from "./Store";
 
+import {
+  initializeKeyboardNavigation,
+  tempFocusOnTopLink,
+} from "./utils/keyboardNavigation";
+
 import "./App.styl";
 
-interface Props {
+interface PathParams {}
+
+interface Props extends RouteComponentProps<PathParams> {
   authenticated: boolean;
 }
 
 interface State {}
 
 class App extends React.Component<Props, State> {
+  componentDidMount(): void {
+    initializeKeyboardNavigation(this.props.history);
+    tempFocusOnTopLink();
+  }
+
   render() {
     return (
       <>
@@ -41,4 +54,4 @@ const mapStateToProps = (state: ReduxState) => ({
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

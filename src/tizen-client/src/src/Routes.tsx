@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import {
   About,
   Authorization,
@@ -9,7 +9,7 @@ import {
   MovieDetails,
   NotFound,
 } from "./screens";
-import { GuestRoute, SecuredRoute } from "./components";
+import { GuestRoute, SecuredRoute, Route } from "./components";
 
 interface Props {}
 
@@ -22,7 +22,9 @@ class Routes extends React.Component<Props, State> {
         <Route path="/" exact={true}>
           <Home />
         </Route>
-        <Route path="/about" exact={true} component={About} />
+        <Route path="/about" exact={true}>
+          <About/>
+        </Route>
         <GuestRoute
           path="/authorization"
           exact={true}
@@ -37,7 +39,9 @@ class Routes extends React.Component<Props, State> {
         <SecuredRoute path="/play/:id">
           <Player />
         </SecuredRoute>
-        <Route component={NotFound} />
+        <Route>
+          <NotFound/>
+        </Route>
       </Switch>
     );
   }

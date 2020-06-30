@@ -1,18 +1,19 @@
 import ReactDOM from "react-dom";
 import React from "react";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { ConnectedRouter } from "connected-react-router";
 
 import { default as App } from "./src/App";
+import { history } from "./src/History";
 import { store } from "./src/Store";
 
-import "./index.styl"
+import "./index.styl";
 
 ReactDOM.render(
-  <MemoryRouter>
-    <Provider store={store}>
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
       <App />
-    </Provider>
-  </MemoryRouter>,
+    </ConnectedRouter>
+  </Provider>,
   document.querySelector(".app")
 );

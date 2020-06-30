@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 
 import { ReduxState } from "../../Store";
 
+import { tempFocusOnTopLink } from "../../utils/keyboardNavigation";
+
 interface Props {
   exact?: boolean;
   path: string;
@@ -12,6 +14,7 @@ interface Props {
 }
 
 const GuestRoute = ({ component: Component, ...otherProps }: Props) => {
+  tempFocusOnTopLink();
   if (otherProps.authenticated === true) {
     return <Redirect to="/" />;
   }

@@ -8,9 +8,16 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 // import logger from 'redux-logger';
+import {
+  connectRouter,
+  routerMiddleware as navigationMiddleware,
+  RouterState,
+} from "connected-react-router";
+import { History } from "history";
 
+import { history } from "./History";
 import { reducer as dataReducer, DataState } from "./services/reducer";
-// import { reducer as scenesReducer } from './scenes/reducer';
+// import { reducer as screensReducer } from './screens/reducer';
 
 declare global {
   interface Window {
@@ -20,17 +27,24 @@ declare global {
 
 export interface ReduxState {
   data: DataState;
+  router: RouterState;
 }
 
-const reducers: Reducer = combineReducers({
-  data: dataReducer,
-  // scenes: scenesReducer
-});
+function createRootReducer(history: History): Reducer {
+  return combineReducers({
+    data: dataReducer,
+    // screens: screensReducer,
+
+    router: connectRouter(history),
+  });
+}
 
 const wrapEnhancersWithDevTools =
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store: Store = createStore(
-  reducers,
-  wrapEnhancersWithDevTools(applyMiddleware(thunk /*, logger*/))
+  createRootReducer(history),
+  wrapEnhancersWithDevTools(
+    applyMiddleware(thunk, navigationMiddleware(history) /*, logger*/)
+  )
 );

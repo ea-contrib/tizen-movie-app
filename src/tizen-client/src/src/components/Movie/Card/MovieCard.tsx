@@ -15,7 +15,7 @@ interface State {}
 export class MovieCard extends React.Component<Props, State> {
   render() {
     return (
-      <div className="movie" onClick={() => this.props.onClick(this.props.movie)}>
+      <div tabIndex={1} className="movie" onClick={() => this.props.onClick(this.props.movie)}>
         <div className="movie__poster">
           <MoviePoster url={this.props.movie.posterUrl} />
         </div>
