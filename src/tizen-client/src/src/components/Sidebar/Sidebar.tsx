@@ -19,12 +19,12 @@ export class Sidebar extends React.Component<Props, State> {
         <div className="sidebar__account-wrapper">
             {!this.props.authenticated && (
               <li className="categories-menu__item categories-menu__item--active">
-                <Link to="/authorization">Sign in</Link>
+                <Link id="entry-point" tabIndex={0} to="/authorization">Sign in</Link>
               </li>
             )}
             {this.props.authenticated && (
               <li className="categories-menu__item">
-                <Link to="/profile">Profile</Link>
+                <Link id="entry-point" tabIndex={0} to="/profile">Profile</Link>
               </li>
             )}
         </div>
@@ -32,16 +32,16 @@ export class Sidebar extends React.Component<Props, State> {
         <div className="sidebar__menu-wrapper">
           <ul className="categories-menu">
             <li className="categories-menu__item">
-              <Link to="/">Home</Link>
+              <Link tabIndex={0} to="/">Home</Link>
             </li>
             <li className="categories-menu__item">
-              <Link to="/movies">Movies</Link>
+              <Link tabIndex={0} to="/movies">Movies</Link>
             </li>
             <li className="categories-menu__item">
-              <Link to="/series">Series</Link>
+              <Link tabIndex={0} to="/series">Series</Link>
             </li>
             <li className="categories-menu__item">
-              <Link to="/about">About</Link>
+              <Link tabIndex={0} to="/about">About</Link>
             </li>
             
           </ul>

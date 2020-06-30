@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ReactNode } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route as RouterRoute } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { ReduxState } from "../../Store";
@@ -9,21 +9,17 @@ import { tempFocusOnTopLink } from "../../utils/keyboardNavigation";
 
 interface IProps {
   exact?: boolean;
-  path: string;
+  path?: string;
   children: ReactNode;
-  authenticated: boolean;
+  authenticated?: boolean;
 }
 
-const SecuredRoute = ({ children, ...otherProps }: IProps) => {
+const Route = ({ children, ...otherProps }: IProps) => {
   tempFocusOnTopLink();
-
-  if (!otherProps.authenticated) {
-    return <Redirect to="/authorization" />;
-  }
   return (
     <>
       {/* <header>User Header</header> */}
-      <Route {...otherProps} children={children} />
+      <RouterRoute {...otherProps} children={children} />
       {/* <footer>User Footer</footer> */}
     </>
   );
@@ -35,4 +31,4 @@ const mapStateToProps = (state: ReduxState) => ({
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SecuredRoute);
+export default connect(mapStateToProps, mapDispatchToProps)(Route);
