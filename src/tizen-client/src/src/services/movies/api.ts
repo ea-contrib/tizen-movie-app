@@ -7,6 +7,8 @@ const inceptionMovie: Movie = {
   posterUrl:
     "https://upload.wikimedia.org/wikipedia/en/2/2e/Inception_%282010%29_theatrical_poster.jpg",
   rating: 8.7,
+  videoUrl:
+    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
 };
 
 const greenBookMovie: Movie = {
@@ -16,6 +18,8 @@ const greenBookMovie: Movie = {
   posterUrl:
     "https://m.media-amazon.com/images/M/MV5BYzIzYmJlYTYtNGNiYy00N2EwLTk4ZjItMGYyZTJiOTVkM2RlXkEyXkFqcGdeQXVyODY1NDk1NjE@._V1_UX182_CR0,0,182,268_AL_.jpg",
   rating: 8.2,
+  videoUrl:
+    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
 };
 
 export const fetchMovies = (filter: MoviesFilter): Promise<Array<Movie>> => {
