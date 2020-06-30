@@ -6,7 +6,6 @@ import { MemoryRouter } from "react-router-dom";
 import { default as App } from "./src/App";
 import { store } from "./src/Store";
 
-import "regenerator-runtime/runtime.js";
 import "./index.styl"
 
 ReactDOM.render(
