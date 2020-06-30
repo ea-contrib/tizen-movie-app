@@ -17,7 +17,7 @@ const SecuredRoute = ({ component: Component, ...otherProps }: IProps) => {
   }
   return (
     <>
-      <header>User Header</header>
+      {/* <header>User Header</header> */}
       <Route
         render={(otherProps) => (
           <>
@@ -25,7 +25,7 @@ const SecuredRoute = ({ component: Component, ...otherProps }: IProps) => {
           </>
         )}
       />
-      <footer>User Footer</footer>
+      {/* <footer>User Footer</footer> */}
     </>
   );
 };
