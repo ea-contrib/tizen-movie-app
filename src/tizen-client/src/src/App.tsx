@@ -1,14 +1,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { withRouter, RouteComponentProps } from "react-router-dom";
-
 import Routes from "./Routes";
 import { Sidebar, Footer } from "./components";
 import { ReduxState } from "./Store";
-
 import { initializeKeyboardActions } from "./utils/keyboardManagement";
-
-import "spatial-navigation-polyfill/polyfill/spatial-navigation-polyfill";
 import "./App.styl";
 
 interface PathParams {}
