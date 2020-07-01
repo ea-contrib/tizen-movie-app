@@ -41,7 +41,7 @@ class MovieDetails extends React.Component<Props, State> {
       <div className="main__movie-wrapper">
         <div className="page__header">
           <div
-            tabIndex={1}
+            tabIndex={0}
             className="page__button button-go-back"
             onClick={() => this.props.history.goBack()}
           >
@@ -73,7 +73,7 @@ class MovieDetails extends React.Component<Props, State> {
                   </div>
                   <div className="movie__buttons">
                     <div
-                      tabIndex={1}
+                      tabIndex={0}
                       className="page__button "
                       onClick={() =>
                         this.props.movie !== null
@@ -84,7 +84,7 @@ class MovieDetails extends React.Component<Props, State> {
                       Play
                     </div>
                     <div
-                      tabIndex={1}
+                      tabIndex={0}
                       className="page__button "
                       onClick={() => this.props.history.goBack()}
                     >

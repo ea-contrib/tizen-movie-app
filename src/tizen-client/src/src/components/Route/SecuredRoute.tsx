@@ -5,8 +5,6 @@ import { connect } from "react-redux";
 
 import { ReduxState } from "../../Store";
 
-import { tempFocusOnTopLink } from "../../utils/keyboardNavigation";
-
 interface IProps {
   exact?: boolean;
   path: string;
@@ -15,8 +13,6 @@ interface IProps {
 }
 
 const SecuredRoute = ({ children, ...otherProps }: IProps) => {
-  tempFocusOnTopLink();
-
   if (!otherProps.authenticated) {
     return <Redirect to="/authorization" />;
   }

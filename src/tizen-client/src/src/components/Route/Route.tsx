@@ -5,8 +5,6 @@ import { connect } from "react-redux";
 
 import { ReduxState } from "../../Store";
 
-import { tempFocusOnTopLink } from "../../utils/keyboardNavigation";
-
 interface IProps {
   exact?: boolean;
   path?: string;
@@ -15,7 +13,6 @@ interface IProps {
 }
 
 const Route = ({ children, ...otherProps }: IProps) => {
-  tempFocusOnTopLink();
   return (
     <>
       {/* <header>User Header</header> */}
