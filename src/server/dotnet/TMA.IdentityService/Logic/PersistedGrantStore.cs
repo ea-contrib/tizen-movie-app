@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using IdentityServer4.Models;
 using IdentityServer4.Stores;
+using TMA.Contracts.Dto;
+using TMA.Contracts.Messages;
 using TMA.MessageBus;
 
 namespace TMA.IdentityService.Logic
@@ -20,111 +21,94 @@ namespace TMA.IdentityService.Logic
 
         public async Task StoreAsync(PersistedGrant grant)
         {
-            // return Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
-            //     .ReplaceOneAsync(x => x.Key == grant.Key, new PersistedGrantDocument(grant), new ReplaceOptions() { IsUpsert = true });
+            await _messageBus.PublishAsync<SaveCommand<GrantDto>, ResponseMessage>(new SaveCommand<GrantDto>(ToDto(grant)));
+        }
+
+        public GrantDto ToDto(PersistedGrant persistedGrant)
+        {
+            if (persistedGrant == null)
+            {
+                return null;
+            }
+
+            return new GrantDto()
+            {
+                ClientId = persistedGrant.ClientId,
+                CreationTime = persistedGrant.CreationTime,
+                Type = persistedGrant.Type,
+                SubjectId = persistedGrant.SubjectId,
+                Key = persistedGrant.Key,
+                Data = persistedGrant.Data,
+                Expiration = persistedGrant.Expiration,
+            };
+        }
+
+        private PersistedGrant ToPersistedGrant(GrantDto dto)
+        {
+            if (dto == null)
+            {
+                return null;
+            }
+
+            return new PersistedGrant()
+            {
+                ClientId = dto.ClientId,
+                CreationTime = dto.CreationTime,
+                Type = dto.Type,
+                SubjectId = dto.SubjectId,
+                Key = dto.Key,
+                Data = dto.Data,
+                Expiration = dto.Expiration
+            };
         }
 
         public async Task<PersistedGrant> GetAsync(string key)
         {
-            // var item = await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
-            //     .FindAsync(x => x.Key == key);
-            // return item.SingleOrDefault()?.AsGrant();
+            var grants = await _messageBus.PublishAsync<GetGrantsListCommand, ListResponseMessage<GrantDto>>(new GetGrantsListCommand()
+            {
+                Key = key
+            });
 
-            return new PersistedGrant();
+            var grant = grants.Value.FirstOrDefault();
+
+            return ToPersistedGrant(grant);
         }
 
         public async Task<IEnumerable<PersistedGrant>> GetAllAsync(string subjectId)
         {
-            // var item = await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
-            //     .FindAsync(x => x.SubjectId == subjectId);
-            // return item.ToList().Select(x => x.AsGrant());
+            var grants = await _messageBus.PublishAsync<GetGrantsListCommand, ListResponseMessage<GrantDto>>(new GetGrantsListCommand()
+            {
+                SubjectId = subjectId
+            });
 
-            return new List<PersistedGrant>();
+            return grants.Value.Select(ToPersistedGrant).ToList();
         }
 
         public async Task RemoveAsync(string key)
         {
-            // await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
-            //     .DeleteManyAsync(x => x.Key == key);
+            await _messageBus.PublishAsync<RemoveGrantsCommand, ResponseMessage>(new RemoveGrantsCommand()
+            {
+                Key = key
+            });
         }
 
         public async Task RemoveAllAsync(string subjectId, string clientId)
         {
-            // await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
-            //     .DeleteManyAsync(x => x.SubjectId == subjectId && x.ClientId == clientId);
+            await _messageBus.PublishAsync<RemoveGrantsCommand, ResponseMessage>(new RemoveGrantsCommand()
+            {
+                SubjectId = subjectId,
+                ClientId = clientId
+            });
         }
 
         public async Task RemoveAllAsync(string subjectId, string clientId, string type)
         {
-            // await Client.GetCollection<PersistedGrantDocument>(typeof(PersistedGrantDocument).Name)
-            //     .DeleteManyAsync(x => x.SubjectId == subjectId && x.ClientId == clientId && x.Type == type);
-
-        }
-
-        private class PersistedGrantDocument
-        {
-            public PersistedGrantDocument()
+            await _messageBus.PublishAsync<RemoveGrantsCommand, ResponseMessage>(new RemoveGrantsCommand()
             {
-
-            }
-
-            public PersistedGrantDocument(PersistedGrant grant)
-            {
-                Key = grant.Key;
-                Type = grant.Type;
-                SubjectId = grant.SubjectId;
-                ClientId = grant.ClientId;
-                CreationTime = grant.CreationTime;
-                Expiration = grant.Expiration;
-                Data = grant.Data;
-            }
-
-            public PersistedGrant AsGrant()
-            {
-                return new PersistedGrant
-                {
-                    Key = Key,
-                    Type = Type,
-                    SubjectId = SubjectId,
-                    ClientId = ClientId,
-                    CreationTime = CreationTime,
-                    Expiration = Expiration,
-                    Data = Data
-                };
-            }
-            /// <summary>
-            /// Gets or sets the identifier.
-            /// </summary>
-            public string Id { get; set; }
-
-            /// <summary>Gets or sets the key.</summary>
-            /// <value>The key.</value>
-            public string Key { get; set; }
-
-            /// <summary>Gets the type.</summary>
-            /// <value>The type.</value>
-            public string Type { get; set; }
-
-            /// <summary>Gets the subject identifier.</summary>
-            /// <value>The subject identifier.</value>
-            public string SubjectId { get; set; }
-
-            /// <summary>Gets the client identifier.</summary>
-            /// <value>The client identifier.</value>
-            public string ClientId { get; set; }
-
-            /// <summary>Gets or sets the creation time.</summary>
-            /// <value>The creation time.</value>
-            public DateTime CreationTime { get; set; }
-
-            /// <summary>Gets or sets the expiration.</summary>
-            /// <value>The expiration.</value>
-            public DateTime? Expiration { get; set; }
-
-            /// <summary>Gets or sets the data.</summary>
-            /// <value>The data.</value>
-            public string Data { get; set; }
-
+                SubjectId = subjectId,
+                ClientId = clientId,
+                Type = type
+            });
         }
     }
 }

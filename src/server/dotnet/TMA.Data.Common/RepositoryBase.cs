@@ -9,15 +9,16 @@ namespace TMA.Data.Common
 {
     public class RepositoryBase
     {
-        private readonly DataContext _dataContext;
+        protected DataContext Context { get; }
+
         public RepositoryBase(DataContext dataContext)
         {
-            _dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            Context = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
 
         protected DbSet<T> GetTable<T>() where T: class
         {
-            return _dataContext.Set<T>();
+            return Context.Set<T>();
         }
 
     }

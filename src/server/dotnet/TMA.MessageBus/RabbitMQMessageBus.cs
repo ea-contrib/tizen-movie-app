@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,13 +13,17 @@ namespace TMA.MessageBus
     {
         private readonly RabbitMQMessageBusOptions _options;
         private readonly ILogger<RabbitMQMessageBus> _logger;
+        private readonly List<IErrorHandler> _errorHandlers;
+        private readonly List<IPostExecuteHandler> _postExecuteHandlers;
         private readonly Lazy<IConnection> _connection;
         private const int ConnectionAttempts = 5;
 
-        public RabbitMQMessageBus(RabbitMQMessageBusOptions options, ILogger<RabbitMQMessageBus> logger = null)
+        public RabbitMQMessageBus(RabbitMQMessageBusOptions options, ILogger<RabbitMQMessageBus> logger, List<IErrorHandler> errorHandlers, List<IPostExecuteHandler> postExecuteHandlers)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _logger = logger;
+            _errorHandlers = errorHandlers ?? throw new ArgumentNullException(nameof(errorHandlers));
+            _postExecuteHandlers = postExecuteHandlers ?? throw new ArgumentNullException(nameof(postExecuteHandlers));
 
             var connectionParams = ConnectionStringParams.FromString(options.ConnectionString);
 
@@ -159,10 +164,7 @@ namespace TMA.MessageBus
                     return Task.CompletedTask;
                 }
 
-                ;
-
                 consumer.Received += OnReceive;
-                ;
 
                 responseChannel.BasicConsume(queue: replyTo,
                     autoAck: true,
@@ -214,27 +216,44 @@ namespace TMA.MessageBus
                     var requestMessage = _options.MessageSerializer.Deserialize<TRequest>(message);
 
 
-                    var response = await process(requestMessage).ConfigureAwait(true);
-
-                    var responseText = response != null ? Encoding.UTF8.GetBytes(_options.MessageSerializer.Serialize(response)) : null;
-
-                    using (var responseChannel = _connection.Value.CreateModel())
+                    try
                     {
-                        var queueName = ea.BasicProperties.ReplyTo;
-                        responseChannel.QueueDeclare(queue: queueName,
-                            durable: false,
-                            exclusive: false,
-                            autoDelete: true,
-                            arguments: null);
+                        var response = await process(requestMessage).ConfigureAwait(true);
 
-                        var props = responseChannel.CreateBasicProperties();
+                        var responseText = response != null
+                            ? Encoding.UTF8.GetBytes(_options.MessageSerializer.Serialize(response))
+                            : null;
 
-                        props.CorrelationId = ea.BasicProperties.CorrelationId;
+                        using (var responseChannel = _connection.Value.CreateModel())
+                        {
+                            var queueName = ea.BasicProperties.ReplyTo;
+                            responseChannel.QueueDeclare(queue: queueName,
+                                durable: false,
+                                exclusive: false,
+                                autoDelete: true,
+                                arguments: null);
 
-                        responseChannel.BasicPublish(exchange: string.Empty,
-                            routingKey: queueName,
-                            basicProperties: props,
-                            body: responseText);
+                            var props = responseChannel.CreateBasicProperties();
+
+                            props.CorrelationId = ea.BasicProperties.CorrelationId;
+
+                            responseChannel.BasicPublish(exchange: string.Empty,
+                                routingKey: queueName,
+                                basicProperties: props,
+                                body: responseText);
+                        }
+
+                        foreach (var postExecuteHandler in _postExecuteHandlers)
+                        {
+                            await postExecuteHandler.Handle();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        foreach (var errorHandler in _errorHandlers)
+                        {
+                            await errorHandler.Handle(ex);
+                        }
                     }
                 }
                 catch (Exception e)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Autofac;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +19,12 @@ namespace TMA.MessageBus
 
                 var connectionString = config.GetRabbitMQConnectionString();
 
-                return new RabbitMQMessageBus(new RabbitMQMessageBusOptions(connectionString), x.Resolve<ILogger<RabbitMQMessageBus>>());
+                return new RabbitMQMessageBus(
+                    new RabbitMQMessageBusOptions(connectionString), 
+                    x.Resolve<ILogger<RabbitMQMessageBus>>(), 
+                    x.Resolve<IEnumerable<IErrorHandler>>().ToList(),
+                    x.Resolve<IEnumerable<IPostExecuteHandler>>().ToList()
+                    );
             })
                 .As<IMessageBus>()
                 .SingleInstance();

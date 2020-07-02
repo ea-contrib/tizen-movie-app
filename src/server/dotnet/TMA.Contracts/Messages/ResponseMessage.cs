@@ -7,6 +7,7 @@ namespace TMA.Contracts.Messages
     public class ResponseMessage
     {
     }
+
     public class ResponseMessage<TValue>
     {
         public ResponseMessage() { }
