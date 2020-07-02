@@ -66,14 +66,10 @@ namespace TMA.IdentityService.Logic
             {
                 new Client
                 {
-                    ClientId = "ab-spa",
-                    ClientName = "A&B SPA",
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RequirePkce = true,
+                    ClientId = "tma-spa",
+                    ClientName = "Movie app SPA",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     RequireClientSecret = false,
-                    RedirectUris = GenerateClientAppUrls(new []{"/", "/silent-renew.html"}),
-                    PostLogoutRedirectUris = GenerateClientAppUrls("/"),
-                    AllowedCorsOrigins = GenerateClientAppUrls("/"),
                     RequireConsent = false,
                     AllowedScopes =
                     {
@@ -85,7 +81,7 @@ namespace TMA.IdentityService.Logic
                     AccessTokenLifetime = AccessTokenLifetime,
                     IdentityTokenLifetime = IdentityTokenLifetime,
                     AllowOfflineAccess = true,
-                    AllowAccessTokensViaBrowser = false,
+                    AllowAccessTokensViaBrowser = true,
                     AlwaysIncludeUserClaimsInIdToken = false,
                     AccessTokenType = AccessTokenType.Reference,
                 }

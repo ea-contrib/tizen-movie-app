@@ -50,7 +50,7 @@ services:
   start-dependencies:
     image: 'dadarek/wait-for-dependencies:0.1'
     tty: true
-    command: 'ppl.rabbit:5672'
+    command: 'tmarabbitmq:5672'
     networks:
       - internal-network
     stdin_open: true
