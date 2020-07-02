@@ -8,6 +8,8 @@ import { history } from "./src/History";
 import { store } from "./src/Store";
 
 import "./index.styl";
+import "./spatial-navigation"
+
 
 ReactDOM.render(
   <Provider store={store}>
