@@ -142,3 +142,22 @@ services:
       - DOTNETCORE_ENVIRONMENT=${RUN_ENVIRONMENT:-Development}
     volumes:
       - 'logs-tma:/var/log/tma'
+
+  tma.backgroundtaskservice:
+    image: ${DOCKER_REGISTRY-}backgroundtaskservice
+    container_name: tma.backgroundtaskservice
+    networks:
+      - internal-network
+    depends_on:
+      - start-dependencies
+    build:
+      context: .
+      dockerfile: TMA.BackgroundTaskService/Dockerfile
+      args:
+        SLN_IMAGE: ${DOCKER_REGISTRY-}tma.sln
+        BUILD_CONFIGURATION: ${BUILD_CONFIGURATION:-Debug}
+    restart: "unless-stopped"
+    environment:
+      - DOTNETCORE_ENVIRONMENT=${RUN_ENVIRONMENT:-Development}
+    volumes:
+      - 'logs-tma:/var/log/tma'

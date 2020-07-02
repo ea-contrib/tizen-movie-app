@@ -50,6 +50,10 @@ namespace TMA.PrincipalService.Repositories
 
             return Task.CompletedTask;
         }
+        public async Task Insert(GrantEntity entity)
+        {
+            await GetTable<GrantEntity>().AddAsync(entity);
+        }
 
         public Task Remove(List<GrantEntity> grants)
         {
@@ -58,9 +62,6 @@ namespace TMA.PrincipalService.Repositories
             return Task.CompletedTask;
         }
 
-        public async Task Insert(GrantEntity entity)
-        {
-            await GetTable<GrantEntity>().AddAsync(entity);
-        }
+    
     }
 }

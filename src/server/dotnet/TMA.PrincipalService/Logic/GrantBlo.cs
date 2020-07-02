@@ -37,7 +37,7 @@ namespace TMA.PrincipalService.Logic
             {
                 var entity = _mapper.Map<GrantEntity>(data);
 
-                await _repository.Update(entity);
+                await _repository.Insert(entity);
             }
 
             return new ResponseMessage();

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TMA.MovieService
+namespace TMA.Contracts.Messages
 {
-    public class MovieBlo
+    public class GetMoviesCommand: MessageBase
     {
     }
 }

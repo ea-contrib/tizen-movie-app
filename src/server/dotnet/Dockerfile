@@ -5,8 +5,12 @@ WORKDIR /src
 
 COPY ./*.sln ./*.dcproj ./
 
+COPY ./Tests/*/*.csproj ./
+RUN for file in $(ls *.csproj); do mkdir -p ./Tests/${file%.*}/ && mv $file ./Tests/${file%.*}/; done;
+
 COPY ./*/*.csproj ./
 RUN for file in $(ls *.csproj); do mkdir -p ./${file%.*}/ && mv $file ./${file%.*}/; done;
+
 
 RUN dotnet restore "TMA.sln"
 

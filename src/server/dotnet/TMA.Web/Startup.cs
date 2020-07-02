@@ -1,3 +1,4 @@
+using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +40,12 @@ namespace TMA.Web
             {
                 endpoints.MapControllers();
             });
+        }
+
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule<WebModule>();
         }
     }
 }

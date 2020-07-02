@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>dotnet-TMA.MovieService-47143B0B-A8CC-4055-AA37-D0DDA5119C6A</UserSecretsId>
+    <UserSecretsId>dotnet-TMA.BackgroundTaskService-47143B0B-A8CC-4055-AA37-D0DDA5119C6A</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire.PostgreSql" Version="1.7.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.4" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
   </ItemGroup>
@@ -22,6 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\.dockerignore" Link=".dockerignore">
+      <DependentUpon>$(DockerDefaultDockerfile)</DependentUpon>
+    </None>
     <None Include="..\nlog.config" Link="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -30,6 +34,11 @@
   <ItemGroup>
     <ProjectReference Include="..\TMA.Common\TMA.Common.csproj" />
     <ProjectReference Include="..\TMA.ServiceBase\TMA.ServiceBase.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire.Core" Version="1.7.11" />
+    <PackageReference Include="Hangfire.NetCore" Version="1.7.11" />
   </ItemGroup>
 
 </Project>

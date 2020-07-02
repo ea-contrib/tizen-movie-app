@@ -23,7 +23,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.2.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TMA.Contracts\TMA.Contracts.csproj" />
+    <ProjectReference Include="..\TMA.MessageBus\TMA.MessageBus.csproj" />
   </ItemGroup>
 
 
