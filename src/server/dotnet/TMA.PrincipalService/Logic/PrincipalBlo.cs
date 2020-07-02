@@ -49,7 +49,8 @@ namespace TMA.PrincipalService.Logic
 
             var identity = new ClaimsIdentity()
                 .SetEmail(principal.Email)
-                .SetSubjectId(principal.Id.ToString());
+                .SetSubjectId(principal.Id.ToString())
+                .SetName(principal.Name);
 
 
             return new ResponseMessage<ClaimsDto>(new ClaimsDto()
