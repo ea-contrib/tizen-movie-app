@@ -3,3 +3,4 @@ export * from "./Footer";
 export * from "./Movie";
 export * from "./Player";
 export * from "./Route";
+export * from "./Form";

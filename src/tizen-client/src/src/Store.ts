@@ -16,6 +16,7 @@ import {
 import { History } from "history";
 
 import { history } from "./History";
+import { reducer as internalReducer, InternalState } from "./internal";
 import { reducer as dataReducer, DataState } from "./services/reducer";
 // import { reducer as screensReducer } from './screens/reducer';
 
@@ -26,12 +27,14 @@ declare global {
 }
 
 export interface ReduxState {
+  internal: InternalState,
   data: DataState;
   router: RouterState;
 }
 
 function createRootReducer(history: History): Reducer {
   return combineReducers({
+    internal: internalReducer,
     data: dataReducer,
     // screens: screensReducer,
 

@@ -2,6 +2,10 @@ import { combineReducers } from "redux";
 import { reducer as authReducer, AuthState } from "./auth/reducer";
 import { reducer as moviesReducer, MoviesState } from "./movies/reducer";
 
+export interface ApplicationState {
+  auth: AuthState;
+}
+
 export interface DataState {
   auth: AuthState;
   movies: MoviesState;
